@@ -79,6 +79,10 @@ foreach ($pet_comments as $row) {
                     <!-- ペット情報 -->
                     <img src="../uploads/<?= htmlspecialchars($pet['image_name']); ?>" alt="画像" class="mt-2 w-full h-auto rounded-md">
 
+                    <div class="my-5">
+                        <a href="../pet/edit.php?pet_id=<?= $pet_id ?>" class="px-3 py-2 text-sm text-white bg-teal-500 rounded">編集</a>
+                    </div>
+
                     <!-- コメントリスト -->
                     <div class="bg-white p-4 mt-4">
                         <h3 class="text-xl font-semibold text-gray-700 mb-4">コメント一覧</h3>
@@ -95,7 +99,7 @@ foreach ($pet_comments as $row) {
                                             <p class="text-gray-700 py-2"><?= nl2br(htmlspecialchars($comment['text'])) ?></p>
                                             <?php if ($comment['user_id']): ?>
                                                 <p class="text-gray-700">
-                                                    <a href="detail.php?pet_id=<?= $pet_id ?>&user_id=<?= htmlspecialchars($comment['user_id']) ?>" class="px-2 py-1 text-xs text-white bg-teal-500 rounded">報告を見る</a>
+                                                    <a href="detail.php?pet_id=<?= $pet_id ?>&user_id=<?= htmlspecialchars($comment['user_id']) ?>" class="px-3 py-2 text-sm text-white bg-teal-500 rounded">報告を見る</a>
                                                 </p>
                                             <?php endif; ?>
                                             <p class="py-2 text-sm text-gray-500 mt-1"><?= htmlspecialchars($comment['created_at']) ?></p>

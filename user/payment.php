@@ -3,6 +3,13 @@ require_once '../db.php';
 session_start();
 session_regenerate_id(true);
 
+if (empty($_SESSION['user'])) {
+    header('Location: ../login/');
+    exit;
+}
+
+$user = $_SESSION['user'];
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ./');
     exit;

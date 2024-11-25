@@ -5,6 +5,13 @@ require_once '../db.php';
 session_start();
 session_regenerate_id(true);
 
+if (empty($_SESSION['user'])) {
+    header('Location: ../login/');
+    exit;
+}
+
+$user = $_SESSION['user'];
+
 if (empty($_GET['pet_id']) || empty($_GET['user_id'])) {
     header('Location: ../login/');
     exit;
