@@ -14,11 +14,7 @@ $pet_id = $_GET['pet_id'];
 $user_id = $_GET['user_id'];
 
 // ペット情報取得
-$sql_pet = "
-    SELECT pets.id AS pet_id, pets.name AS pet_name, pets.image_name AS pet_image, pets.description AS pet_description, pets.created_at AS pet_created_at, pets.user_id AS pet_owner_id
-    FROM pets
-    WHERE pets.id = :pet_id;
-";
+$sql_pet = "SELECT * FROM pets WHERE pets.id = :pet_id;";
 $stmt_pet = $pdo->prepare($sql_pet);
 $stmt_pet->execute(['pet_id' => $pet_id]);
 $pet = $stmt_pet->fetch(PDO::FETCH_ASSOC);
@@ -32,12 +28,18 @@ if (!$pet) {
 $sql_user = "SELECT * FROM users WHERE id = :user_id;";
 $stmt_user = $pdo->prepare($sql_user);
 $stmt_user->execute(['user_id' => $user_id]);
-$user = $stmt_user->fetch(PDO::FETCH_ASSOC);
+$report_user = $stmt_user->fetch(PDO::FETCH_ASSOC);
 
-if (!$user) {
+if (!$report_user) {
     header('Location: ./');
     exit;
 }
+
+// 報酬
+$sql_user = "SELECT * FROM rewards WHERE pet_id = :pet_id AND user_id = :user_id;";
+$stmt_user = $pdo->prepare($sql_user);
+$stmt_user->execute(['pet_id' => $pet['id'], 'user_id' => $user_id]);
+$reward = $stmt_user->fetch(PDO::FETCH_ASSOC);
 
 // 発見者のコメント取得
 $sql_comments = "
@@ -72,12 +74,12 @@ $comments = $stmt_comments->fetchAll(PDO::FETCH_ASSOC);
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
             <div class="flex flex-col md:flex-row gap-6">
                 <div class="w-full md:w-1/2">
-                    <img src="../uploads/<?= htmlspecialchars($pet['pet_image']); ?>" alt="ペット画像" class="w-full h-auto rounded-md">
+                    <img src="../uploads/<?= htmlspecialchars($pet['image_name']); ?>" alt="ペット画像" class="w-full h-auto rounded-md">
                 </div>
                 <div class="w-full md:w-1/2 space-y-4">
-                    <h2 class="text-2xl font-semibold text-gray-700"><?= htmlspecialchars($pet['pet_name']); ?></h2>
-                    <p class="text-gray-600">説明: <?= nl2br(htmlspecialchars($pet['pet_description'])); ?></p>
-                    <p class="text-gray-600">登録日: <?= htmlspecialchars($pet['pet_created_at']); ?></p>
+                    <h2 class="text-2xl font-semibold text-gray-700"><?= htmlspecialchars($pet['name']); ?></h2>
+                    <p class="text-gray-600">説明: <?= nl2br(htmlspecialchars($pet['description'])); ?></p>
+                    <p class="text-gray-600">登録日: <?= htmlspecialchars($pet['created_at']); ?></p>
                 </div>
             </div>
         </div>
@@ -85,8 +87,33 @@ $comments = $stmt_comments->fetchAll(PDO::FETCH_ASSOC);
         <!-- 発見者情報 -->
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
             <h3 class="text-3xl font-bold mb-4">発見者情報</h3>
-            <p class="text-gray-600">ユーザ名: <?= htmlspecialchars($user['name']); ?></p>
-            <p class="text-gray-600">Email: <?= htmlspecialchars($user['email']); ?></p>
+            <p class="text-gray-600 p-2">ユーザ名: <?= htmlspecialchars($report_user['name']); ?></p>
+            <p class="text-gray-600 p-2">Email: <?= htmlspecialchars($report_user['email']); ?></p>
+            <p class="text-gray-600 p-2">電話: <?= htmlspecialchars($report_user['phone']); ?></p>
+
+            <div class="mt-4">
+                <?php if ($reward['is_payment']): ?>
+                    <span class="px-4 py-2 bg-red-500 text-white rounded-md">支払い済み</span>
+                    <?= number_format($reward['amount']) ?>円
+                <?php else: ?>
+                    <div class="my-2">
+                        <form action="reward.php" method="post">
+                            <input class="px-2 py-1 border border-gray-400 rounded text-right" type="number" name="amount" value="<?= @$reward['amount'] ?>" min="0" max="100000">
+                            円
+                            <button class="px-4 py-2 bg-blue-500 text-white rounded-md">報酬を更新</button>
+                            <input type="hidden" name="user_id" value="<?= $report_user['id'] ?>">
+                            <input type="hidden" name="pet" value="<?= $pet['id'] ?>">
+                        </form>
+                    </div>
+
+                    <div class="my-2">
+                        <form action="payment.php" method="post" onsubmit="return confirm('<?= number_format($reward['amount']) ?>円で支払い済みにしますか？')">
+                            <button class="px-4 py-2 bg-red-500 text-white rounded-md">支払い済みにする</button>
+                            <input type="hidden" name="reward_id" value="<?= $reward['id'] ?>">
+                        </form>
+                    </div>
+                <?php endif ?>
+            </div>
         </div>
 
         <!-- 発見者のコメント一覧 -->

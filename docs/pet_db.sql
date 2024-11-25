@@ -32,9 +32,10 @@ CREATE TABLE comments (
 
 CREATE TABLE rewards (
     id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    pet_id int(11) NOT NULL,
     user_id int(11) NOT NULL,
+    pet_id int(11) NOT NULL,
     amount int(11) NOT NULL,
+    is_payment boolean DEFAULT NULL,
     created_at datetime NOT NULL DEFAULT current_timestamp(),
     updated_at datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
