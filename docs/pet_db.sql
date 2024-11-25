@@ -1,6 +1,6 @@
 CREATE TABLE users (
     id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    is_active boolean DEFAUT NULL,
+    is_resolved boolean DEFAUT NULL,
     name varchar(100) NOT NULL,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,

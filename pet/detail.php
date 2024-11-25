@@ -2,10 +2,16 @@
 require_once '../db.php';
 require_once '../models/Animal.php';
 
+session_start();
+session_regenerate_id(true);
+
 if (empty($_GET['pet_id'])) {
     header('Location: ./');
     exit;
 }
+
+
+$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
 
 $pet_id = $_GET['pet_id'];
 
@@ -56,6 +62,9 @@ $animal_data = $animal->fetch($pet['animal_id']);
                     <img src="../uploads/<?= htmlspecialchars($pet['image_name']) ?>" alt="ペット画像" class="w-full h-auto rounded-md">
                 </div>
                 <div class="w-full md:w-1/2 space-y-4">
+                    <div class="my-2">
+                        <span class="px-4 py-2 bg-red-500 text-white rounded-md">解決済み</span>
+                    </div>
                     <h3 class="text-2xl font-semibold text-gray-700"><?= htmlspecialchars($pet['name']) ?></h3>
                     <p class="text-gray-600">種類: <?= htmlspecialchars($animal_data['name'] ?? '不明') ?></p>
                     <p class="text-gray-600">説明: <?= nl2br(htmlspecialchars($pet['description'] ?? '説明がありません。')) ?></p>

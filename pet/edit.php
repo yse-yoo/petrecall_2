@@ -52,7 +52,14 @@ $animals = $animal->getList();
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">ペット情報の編集</h2>
         <form action="update.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="pet_id" value="<?= htmlspecialchars($pet['id']); ?>">
-            
+
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-2">解決済み</label>
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="is_resolved" value="1" <?= @$pet['is_resolved'] ? 'checked' : '' ?> class="form-checkbox">
+                    <span class="ml-2 text-gray-700">解決済みにする</span>
+                </label>
+            </div>
             <div class="mb-6">
                 <label class="block text-gray-700 font-medium mb-2">ペットの名前</label>
                 <input type="text" name="name" value="<?= htmlspecialchars($pet['name']); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" required>

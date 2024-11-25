@@ -13,11 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // POSTデータの取得
     $posts = $_POST;
 
+    // is_resolved を数値に変換
+    $posts['is_resolved'] = isset($posts['is_resolved']) ? 1 : 0;
+
+    // ペット情報の取得
     $sql = "SELECT * FROM pets WHERE id = :pet_id;";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['pet_id' => $posts['pet_id']]);
     $pet = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    if (!$pet) {
+        echo "<p>ペット情報が見つかりません。</p>";
+        exit;
+    }
+
+    // 既存の画像名を設定
     $posts['image_name'] = $pet['image_name'];
 
     // 画像がアップロードされている場合
@@ -34,12 +44,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 animal_id = :animal_id,
                 description = :description,
                 image_name = :image_name,
+                is_resolved = :is_resolved,
                 updated_at = NOW()
-            WHERE id = :pet_id;";
+            WHERE id = :pet_id AND user_id = :user_id;";
 
     // パラメータのバインド
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($posts);
+    $stmt->execute([
+        ':name' => $posts['name'],
+        ':animal_id' => $posts['animal_id'],
+        ':description' => $posts['description'],
+        ':image_name' => $posts['image_name'],
+        ':is_resolved' => $posts['is_resolved'],
+        ':pet_id' => $posts['pet_id'],
+        ':user_id' => $_SESSION['user']['id']
+    ]);
 
     // 編集後のリダイレクト
     header('Location: ../user/');

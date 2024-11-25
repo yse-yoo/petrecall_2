@@ -16,6 +16,7 @@ $user = $_SESSION['user'];
 $sql = "
     SELECT 
         pets.id AS pet_id, 
+        pets.is_resolved AS is_resolved, 
         pets.name AS pet_name, 
         pets.image_name AS pet_image, 
         comments.comment AS comment_text, 
@@ -38,6 +39,7 @@ foreach ($pet_comments as $row) {
     if (!isset($pets[$pet_id])) {
         $pets[$pet_id] = [
             'name' => $row['pet_name'],
+            'is_resolved' => $row['is_resolved'],
             'image_name' => $row['pet_image'],
             'comments' => []
         ];
@@ -74,6 +76,12 @@ foreach ($pet_comments as $row) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($pets as $pet_id => $pet): ?>
                 <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <?php if ($pet['is_resolved']): ?>
+                    <div class="my-2">
+                        <span class="px-4 py-2 bg-red-500 text-white rounded-md">解決済み</span>
+                    </div>
+                    <?php endif ?>
+
                     <h3 class="text-2xl font-bold mt-2 text-gray-600 text-center"><?= htmlspecialchars($pet['name']); ?></h3>
 
                     <!-- ペット情報 -->
