@@ -20,7 +20,7 @@ CREATE TABLE pets (
     updated_at datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-CREATE TABLE pet_notifications (
+CREATE TABLE comments (
     id int(11) NOT NULL,
     pet_id int(11) NOT NULL,
     image_name varchar(255) NOT NULL,

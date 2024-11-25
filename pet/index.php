@@ -44,14 +44,12 @@ $pets = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif ?>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($pets as $pet): ?>
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <img src="../uploads/<?php echo htmlspecialchars($pet['image_name']); ?>" alt="画像" class="mt-2 w-full h-auto rounded-md">
-                    <p class="mt-2 text-gray-600">ペット名：<?php echo htmlspecialchars($pet['name']); ?></p>
-                    <!-- <p class="mt-2 text-gray-600"><?php echo htmlspecialchars($pet['user_name']); ?>さんの犬</p> 
-                    <p class="mt-2 text-gray-600">Email: <?php echo htmlspecialchars($pet['email']); ?></p>
-                    <p class="mt-2 text-gray-600">住所: <?php echo htmlspecialchars($pet['address']); ?></p>
-                    <p class="mt-2 text-gray-600">電話番号: <?php echo htmlspecialchars($pet['phone']); ?></p>-->
-                </div>
+                <a href="detail.php?pet_id=<?= $pet['id'] ?>">
+                    <div class="bg-white p-4 rounded-lg shadow-lg">
+                        <img src="../uploads/<?= $pet['image_name'] ?>" alt="画像" class="mt-2 w-full h-auto rounded-md">
+                        <p class="mt-2 text-gray-600">ペット名：<?php echo htmlspecialchars($pet['name']); ?></p>
+                    </div>
+                </a>
             <?php endforeach; ?>
         </div>
     </main>

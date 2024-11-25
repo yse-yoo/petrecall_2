@@ -10,9 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 session_start();
 session_regenerate_id(true);
 
-// ユーザセッション
-$user (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
-
 // セッションにPOSTデータを登録
 $_SESSION['regist'] = $_POST;
 
@@ -86,39 +83,39 @@ function validate($posts, $pdo)
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- ヘッダー -->
-    <?php include "../components/header.php" ?>
+    <?php include "../components/header.php"; ?>
 
     <!-- メインコンテンツ -->
-    <main class="flex-grow flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-semibold text-center mb-6">会員登録確認</h2>
+    <main class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">会員登録確認</h2>
             <form action="add.php" method="post">
                 <!-- 名前 -->
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-700 font-medium mb-1">氏名</label>
-                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= $post["name"] ?></p>
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 font-medium mb-2">氏名</label>
+                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= htmlspecialchars($post["name"]); ?></p>
                 </div>
 
                 <!-- Email -->
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
-                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= $post["email"] ?></p>
+                <div class="mb-6">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= htmlspecialchars($post["email"]); ?></p>
                 </div>
 
                 <!-- 住所 -->
-                <div class="mb-4">
-                    <label for="address" class="block text-gray-700 font-medium mb-1">住所</label>
-                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= $post["address"] ?></p>
+                <div class="mb-6">
+                    <label for="address" class="block text-gray-700 font-medium mb-2">住所</label>
+                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= htmlspecialchars($post["address"]); ?></p>
                 </div>
 
                 <!-- 電話番号 -->
-                <div class="mb-4">
-                    <label for="phone" class="block text-gray-700 font-medium mb-1">電話番号</label>
-                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= $post["phone"] ?></p>
+                <div class="mb-6">
+                    <label for="phone" class="block text-gray-700 font-medium mb-2">電話番号</label>
+                    <p class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"><?= htmlspecialchars($post["phone"]); ?></p>
                 </div>
 
                 <!-- ボタン -->
-                <div class="flex justify-between mt-6">
+                <div class="flex justify-between mt-8">
                     <button type="submit"
                         class="w-1/2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
                         登録
