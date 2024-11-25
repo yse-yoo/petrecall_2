@@ -95,7 +95,7 @@ foreach ($pet_comments as $row) {
                                             <p class="text-gray-700 py-2"><?= nl2br(htmlspecialchars($comment['text'])) ?></p>
                                             <?php if ($comment['user_id']): ?>
                                                 <p class="text-gray-700">
-                                                    <a href="detail.php?pet_id=<?= $pet_id ?>&user_id=<?= htmlspecialchars($comment['user_id']) ?>" class="px-2 py-1 text-xs text-white bg-teal-500 rounded">発見者</a>
+                                                    <a href="detail.php?pet_id=<?= $pet_id ?>&user_id=<?= htmlspecialchars($comment['user_id']) ?>" class="px-2 py-1 text-xs text-white bg-teal-500 rounded">報告を見る</a>
                                                 </p>
                                             <?php endif; ?>
                                             <p class="py-2 text-sm text-gray-500 mt-1"><?= htmlspecialchars($comment['created_at']) ?></p>

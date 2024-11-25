@@ -68,14 +68,14 @@ $animal_data = $animal->fetch($pet['animal_id']);
 
         <!-- コメント入力欄 -->
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h3 class="text-2xl font-semibold text-gray-700 mb-4">コメントを追加</h3>
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4">発見情報を報告</h3>
             <form action="add_comment.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="pet_id" value="<?= htmlspecialchars($pet_id) ?>">
                 <div class="mb-4">
                     <label for="comment" class="block text-gray-700 font-medium mb-2">コメント</label>
                     <textarea id="comment" name="comment" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" required></textarea>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">コメントを投稿</button>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">報告</button>
             </form>
         </div>
 
