@@ -20,11 +20,11 @@ if (!$pet) {
     exit;
 }
 
-// コメントリスト取得
-$sql = "SELECT * FROM comments WHERE pet_id = :pet_id ORDER BY created_at DESC;";
+// 飼い主
+$sql = "SELECT * FROM users WHERE id = :user_id;";
 $stmt = $pdo->prepare($sql);
-$stmt->execute(['pet_id' => $pet_id]);
-$comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->execute(['user_id' => $pet['user_id']]);
+$pet_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // ペット種類
 $animal = new Animal();
@@ -47,7 +47,7 @@ $animal_data = $animal->fetch($pet['animal_id']);
 
     <!-- メインコンテンツ -->
     <main class="flex-grow container mx-auto p-8">
-        <h2 class="text-3xl font-bold text-left text-gray-800 mb-6">ペット情報</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">ペット情報</h2>
 
         <!-- ペット情報 -->
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
@@ -59,32 +59,26 @@ $animal_data = $animal->fetch($pet['animal_id']);
                     <h3 class="text-2xl font-semibold text-gray-700"><?= htmlspecialchars($pet['name']) ?></h3>
                     <p class="text-gray-600">種類: <?= htmlspecialchars($animal_data['name'] ?? '不明') ?></p>
                     <p class="text-gray-600">説明: <?= nl2br(htmlspecialchars($pet['description'] ?? '説明がありません。')) ?></p>
+                    <p class="text-gray-600">ユーザ名: <?= htmlspecialchars($pet_user['name']) ?></p>
+                    <p class="text-gray-600">Email: <?= htmlspecialchars($pet_user['email']) ?></p>
                     <p class="text-gray-600">登録日: <?= htmlspecialchars($pet['created_at']) ?></p>
                 </div>
             </div>
         </div>
 
-        <!-- コメントリスト -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h3 class="text-2xl font-semibold text-gray-700 mb-4">コメント一覧</h3>
-            <?php if (count($comments) > 0): ?>
-                <ul class="space-y-6">
-                    <?php foreach ($comments as $comment): ?>
-                        <li class="flex gap-4">
-                            <div class="w-16 h-16 flex-shrink-0">
-                                <img src="../uploads/<?= htmlspecialchars($comment['image_name']) ?>" alt="コメント画像" class="w-full h-full object-cover rounded-md">
-                            </div>
-                            <div>
-                                <p class="text-gray-700"><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
-                                <p class="text-sm text-gray-500 mt-1"><?= htmlspecialchars($comment['created_at']) ?></p>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p class="text-gray-600">コメントがまだありません。</p>
-            <?php endif; ?>
+        <!-- コメント入力欄 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4">コメントを追加</h3>
+            <form action="add_comment.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="pet_id" value="<?= htmlspecialchars($pet_id) ?>">
+                <div class="mb-4">
+                    <label for="comment" class="block text-gray-700 font-medium mb-2">コメント</label>
+                    <textarea id="comment" name="comment" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" required></textarea>
+                </div>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">コメントを投稿</button>
+            </form>
         </div>
+
     </main>
 </body>
 
